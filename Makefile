@@ -29,8 +29,8 @@ OBJS_SERVER = $(SRCS_SERVER:.c=.o)
 OBJS_BONUS_CLIENT = $(SRCS_BONUS_CLIENT:.c=.o)
 OBJS_BONUS_SERVER = $(SRCS_BONUS_SERVER:.c=.o)
 
-LIBFTPRINTF = ./ft_printf/libftprintf.a
-LIBFTPRINTF_DIR = ./ft_printf
+LIBFTPRINTF = ft_printf/libftprintf.a
+LIBFTPRINTF_DIR = ft_printf
 
 all: $(NAME) clean
 	@echo "Derlemeler tamamlandı."
