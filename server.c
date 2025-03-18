@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "minitalk.h"
 
 void	ft_handler(int signum, siginfo_t *info, void *context)
@@ -20,6 +18,7 @@ void	ft_handler(int signum, siginfo_t *info, void *context)
 	static int	c = 0;
 
 	(void)context;
+	printf("%b", c);
 	if (signum == SIGUSR1)
 		c = (c << 1) | 1;
 	else if (signum == SIGUSR2)
@@ -31,7 +30,8 @@ void	ft_handler(int signum, siginfo_t *info, void *context)
 		i = 0;
 		c = 0;
 	}
-	kill(info->si_pid, SIGUSR1);
+	if (kill(info->si_pid, SIGUSR1) == -1)
+		exit(EXIT_FAILURE);
 }
 
 int	main(void)
@@ -42,8 +42,12 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = ft_handler;
 	sigemptyset(&act.sa_mask);
-	if (sigaction(SIGUSR1, &act, NULL) == -1 || sigaction(SIGUSR2, &act,
-			NULL) == -1)
+	if (sigaction(SIGUSR1, &act, NULL) == -1)
+	{
+		ft_printf("kizilciklar oldu mu senelere doldu mu");
+		return (-1);
+	}
+	if (sigaction(SIGUSR2, &act, NULL) == -1)
 	{
 		ft_printf("kizilciklar oldu mu senelere doldu mu");
 		return (-1);

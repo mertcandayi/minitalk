@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "minitalk_bonus.h"
 
 volatile sig_atomic_t	g_sig = 0;
@@ -24,19 +22,17 @@ static void	ft_handler(int x)
 		exit(EXIT_FAILURE);
 }
 
-static int	ft_atoi(char *str)
+static int	ft_atoi_pid(char *str)
 {
 	int	res;
-	int	i;
 
-	i = 1;
 	res = 0;
 	while (*str <= 32)
 		str++;
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
-			i *= -1;
+			return (-1);
 		str++;
 	}
 	while (*str >= '0' && *str <= '9')
@@ -44,7 +40,9 @@ static int	ft_atoi(char *str)
 		res = (res * 10) + *str - '0';
 		str++;
 	}
-	return (res * i);
+	if (*str)
+		return (-1);
+	return (res);
 }
 
 static void	ft_sendbit(int pid, unsigned char *str)
@@ -78,10 +76,10 @@ int	main(int ac, char **av)
 		ft_printf("%s [PID] [MESSAGE]\n", av[0]);
 		return (-1);
 	}
-	pid = ft_atoi(av[1]);
-	if (pid == -1 || pid > 4194304 || kill(pid, 0) == -1)
+	pid = ft_atoi_pid(av[1]);
+	if (pid <= 0 || pid > 4194304 || kill(pid, 0) == -1)
 	{
-		ft_printf("wrong pid!!!! haha loser :)");
+		ft_printf("wrong pid!");
 		return (-1);
 	}
 	signal(SIGUSR1, ft_handler);

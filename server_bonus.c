@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "minitalk_bonus.h"
 
 void	ft_handler(int signum, siginfo_t *info, void *context)
@@ -42,8 +40,12 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = ft_handler;
 	sigemptyset(&act.sa_mask);
-	if (sigaction(SIGUSR1, &act, NULL) == -1 || sigaction(SIGUSR2, &act,
-			NULL) == -1)
+	if (sigaction(SIGUSR1, &act, NULL) == -1)
+	{
+		ft_printf("kizilciklar oldu mu senelere doldu mu");
+		return (-1);
+	}
+	if (sigaction(SIGUSR2, &act, NULL) == -1)
 	{
 		ft_printf("kizilciklar oldu mu senelere doldu mu");
 		return (-1);
